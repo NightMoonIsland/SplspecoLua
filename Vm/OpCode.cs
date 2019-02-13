@@ -6,6 +6,14 @@ namespace Vm
 {
     public struct OpCode
     {
+        public static readonly OpCode[] codes =
+        {
+            new OpCode(0, 1, OpArgMaskEnum.OpArgR, OpArgMaskEnum.OpArgN, OpModeEnum.iABC, "" ),
+            new OpCode(0, 1, OpArgMaskEnum.OpArgK, OpArgMaskEnum.OpArgN, OpModeEnum.iABx, ""),
+            new OpCode(0, 1, OpArgMaskEnum.OpArgN, OpArgMaskEnum.OpArgN, OpModeEnum.iABx, ""),
+        };
+
+
         public byte testFlag;
         public byte setAFlag;
         public OpArgMaskEnum argBMode;
@@ -27,11 +35,5 @@ namespace Vm
             this.opMode = opMode;
             this.name = name;
         }
-
-        public static readonly OpCode[] codes =
-        {
-            new OpCode(0, 1, OpArgMaskEnum.OpArgR, OpArgMaskEnum.OpArgN, OpModeEnum.iABC, "" ),
-            new OpCode(0, 1, OpArgMaskEnum.OpArgK, OpArgMaskEnum.OpArgN, OpModeEnum.iABx, ""),
-        };
     }
 }
