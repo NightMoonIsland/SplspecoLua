@@ -8,6 +8,8 @@ namespace State
     {
         LuaStack stack = new LuaStack();
 
+        public int PC { get; set; }
+
         public void AddPC()
         {
             throw new NotImplementedException();
