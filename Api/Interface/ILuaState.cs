@@ -11,5 +11,10 @@ namespace Api
         bool CheckStack(int n);
         void Pop(int n);
         void Copy(int fromIdx, int toIdx);
+        void PushValue(int idx);
+        void Replace(int idx);
+        void Insert(int idx);
+        void Remove(int idx);
+        void Rotate(int idx, int n);
     }
 }

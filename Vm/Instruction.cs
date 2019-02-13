@@ -6,37 +6,37 @@ namespace Vm
 {
     public class Instruction
     {
-        public static OpCode getOpCode(int i)
+        public static OpCode GetOpCode(int i)
         {
             return OpCode.codes[i & 0x3F];
         }
 
-        public static int getA(int i)
+        public static int GetA(int i)
         {
             return (i >> 6) & 0xFF;
         }
 
-        public static int getC(int i)
+        public static int GetC(int i)
         {
             return (i >> 14) & 0x1FF;
         }
 
-        public static int getB(int i)
+        public static int GetB(int i)
         {
             return (i >> 23) & 0x1FF;
         }
 
-        public static int getBx(int i)
+        public static int GetBx(int i)
         {
             return (i >> 14);
         }
 
-        public static int getSBx(int i)
+        public static int GetSBx(int i)
         {
             return (i >> 14);
         }
 
-        public static int getAx(int i)
+        public static int GetAx(int i)
         {
             return (i >> 6);
         }
