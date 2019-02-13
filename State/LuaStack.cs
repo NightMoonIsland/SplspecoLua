@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Stack
+namespace State
 {
     public class LuaStack
     {
