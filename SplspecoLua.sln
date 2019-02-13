@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Number", "Number\Number.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestChunk", "Test\TestChunk\TestChunk.csproj", "{3F764906-2246-4FF1-A796-AAD43BD1E3CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{49942D89-E326-4F1F-A197-385E4B35A3C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,18 @@ Global
 		{3F764906-2246-4FF1-A796-AAD43BD1E3CC}.Release|x64.Build.0 = Release|Any CPU
 		{3F764906-2246-4FF1-A796-AAD43BD1E3CC}.Release|x86.ActiveCfg = Release|Any CPU
 		{3F764906-2246-4FF1-A796-AAD43BD1E3CC}.Release|x86.Build.0 = Release|Any CPU
+		{49942D89-E326-4F1F-A197-385E4B35A3C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49942D89-E326-4F1F-A197-385E4B35A3C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49942D89-E326-4F1F-A197-385E4B35A3C0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{49942D89-E326-4F1F-A197-385E4B35A3C0}.Debug|x64.Build.0 = Debug|Any CPU
+		{49942D89-E326-4F1F-A197-385E4B35A3C0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{49942D89-E326-4F1F-A197-385E4B35A3C0}.Debug|x86.Build.0 = Debug|Any CPU
+		{49942D89-E326-4F1F-A197-385E4B35A3C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49942D89-E326-4F1F-A197-385E4B35A3C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49942D89-E326-4F1F-A197-385E4B35A3C0}.Release|x64.ActiveCfg = Release|Any CPU
+		{49942D89-E326-4F1F-A197-385E4B35A3C0}.Release|x64.Build.0 = Release|Any CPU
+		{49942D89-E326-4F1F-A197-385E4B35A3C0}.Release|x86.ActiveCfg = Release|Any CPU
+		{49942D89-E326-4F1F-A197-385E4B35A3C0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
