@@ -4,8 +4,8 @@ using System.Text;
 
 namespace State
 {
-    public class LuaStackHandler
+    public class LuaStateImplement : ILuaState
     {
-
+        LuaStack stack = new LuaStack();
     }
 }

@@ -10,7 +10,7 @@ namespace State
 {
     class Arithmetic
     {
-        LongBinaryOperator[] integerOps =
+        static readonly LongBinaryOperator[] integerOps =
         {
             (a, b) => { return a + b; },
             (a, b) => { return a - b; },
@@ -28,7 +28,7 @@ namespace State
             (a, b) => { return ~a; },
         };
 
-        DoubleBinaryOperator[] floatOps =
+        static readonly DoubleBinaryOperator[] floatOps =
         {
             (a, b) => { return a + b; },
             (a, b) => { return a - b; },
@@ -48,6 +48,24 @@ namespace State
 
         public static Object Arith(Object a, Object b, ArithOp op)
         {
+            LongBinaryOperator integerFunc = integerOps[(int)op];
+            DoubleBinaryOperator floatFunc = floatOps[(int)op];
+            if(floatFunc == null)
+            {
+                long? x = LuaValue.ToInteger(a);
+                if(x != null)
+                {
+                    long? y = LuaValue.ToInteger(b);
+                    if(y != null)
+                    {
+                        return integerFunc((long)x, (long)y);
+                    }
+                }
+            }
+            else
+            {
+
+            }
             return null;
         }
     }
