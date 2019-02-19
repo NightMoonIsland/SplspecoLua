@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Chunk;
+using System;
+using System.IO;
 
 namespace TestChunk
 {
@@ -6,6 +8,14 @@ namespace TestChunk
     {
         static void Main(string[] args)
         {
+            if (args.Length > 0)
+            {
+                string path = Path.GetFullPath(args[0]);
+                Console.WriteLine($"path {path}");
+                byte[] data = File.ReadAllBytes(Path.GetFullPath(args[0]));
+                Prototype proto = BinaryChunk.Undump(data);
+                Console.WriteLine($"byte {data.Length}");
+            }
             Console.WriteLine("Hello World!");
         }
     }

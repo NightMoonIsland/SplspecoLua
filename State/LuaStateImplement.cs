@@ -13,7 +13,7 @@ namespace State
 
         public int AbsIndex(int idx)
         {
-            throw new NotImplementedException();
+            return stack.AbsIndex(idx);
         }
 
         public void AddPC()
@@ -63,7 +63,7 @@ namespace State
 
         public int GetTop()
         {
-            throw new NotImplementedException();
+            return stack.Top();
         }
 
         public void Insert(int idx)
