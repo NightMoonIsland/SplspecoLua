@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Vm
+namespace Api
 {
     public enum OpCodeEnum
     {

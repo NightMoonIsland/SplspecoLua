@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Vm
+namespace Api
 {
     public enum OpModeEnum
     {
