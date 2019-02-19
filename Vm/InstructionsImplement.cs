@@ -14,6 +14,22 @@ namespace Vm
             vm.Copy(b, a);
         }
 
+        public static void LoadK(int i, ILuaVM vm)
+        {
+            int a = Instruction.GetA(i) + 1;
+            int bx = Instruction.GetBx(i);
+            vm.GetConst(bx);
+            vm.Replace(a);
+        }
+
+        public static void LoadKx(int i, ILuaVM vm)
+        {
+            int a = Instruction.GetA(i) + 1;
+            int ax = Instruction.GetAx(vm.Fetch());
+            vm.GetConst(ax);
+            vm.Replace(a);
+        }
+
         public static void Jmp(int i, ILuaVM vm)
         {
             int a = Instruction.GetA(i);

@@ -16,5 +16,6 @@ namespace Api
         void Insert(int idx);
         void Remove(int idx);
         void Rotate(int idx, int n);
+        void SetTop(int idx);
     }
 }

@@ -90,5 +90,10 @@ namespace State
         {
             throw new NotImplementedException();
         }
+
+        public void SetTop(int idx)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

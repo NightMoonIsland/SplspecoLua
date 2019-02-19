@@ -3,11 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using LongBinaryOperator = System.Func<long, long, long>;
-using DoubleBinaryOperator = System.Func<double, double, double>;
 
 namespace State
 {
+    using LongBinaryOperator = System.Func<long, long, long>;
+    using DoubleBinaryOperator = System.Func<double, double, double>;
+
     class Arithmetic
     {
         static readonly LongBinaryOperator[] integerOps =
