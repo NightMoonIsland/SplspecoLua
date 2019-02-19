@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace State
+namespace Api
 {
-    public enum ArithOp
+    public enum ArithOpEnum
     {
         LUA_OPADD, // +
         LUA_OPSUB, // -

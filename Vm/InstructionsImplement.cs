@@ -53,5 +53,30 @@ namespace Vm
             int c = Instruction.GetC(i);
             vm.GetRK(c);
         }
+
+        #region Arith
+        public static void Add(int i, ILuaVM vm)
+        {
+
+        }
+
+        private static void binaryArith(int i, ILuaVM vm, ArithOpEnum op)
+        {
+            int a = Instruction.GetA(i) + 1;
+            int b = Instruction.GetB(i) + 1;
+            vm.PushValue(b);
+            vm.Arith(op);
+            vm.Replace(a);
+        }
+
+        private static void unaryArith(int i, ILuaVM vm, ArithOpEnum op)
+        {
+            int a = Instruction.GetA(i) + 1;
+            int b = Instruction.GetB(i) + 1;
+            vm.PushValue(b);
+            vm.Arith(op);
+            vm.Replace(a);
+        }
+        #endregion
     }
 }

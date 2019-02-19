@@ -17,5 +17,7 @@ namespace Api
         void Remove(int idx);
         void Rotate(int idx, int n);
         void SetTop(int idx);
+
+        void Arith(ArithOpEnum op);
     }
 }

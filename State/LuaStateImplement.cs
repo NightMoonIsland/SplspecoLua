@@ -26,6 +26,11 @@ namespace State
             throw new NotImplementedException();
         }
 
+        public void Arith(ArithOpEnum op)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool CheckStack(int n)
         {
             throw new NotImplementedException();

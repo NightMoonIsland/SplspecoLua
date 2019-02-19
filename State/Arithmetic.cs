@@ -1,4 +1,5 @@
-﻿using Number;
+﻿using Api;
+using Number;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -47,7 +48,7 @@ namespace State
             null,
         };
 
-        public static Object Arith(Object a, Object b, ArithOp op)
+        public static Object Arith(Object a, Object b, ArithOpEnum op)
         {
             LongBinaryOperator integerFunc = integerOps[(int)op];
             DoubleBinaryOperator floatFunc = floatOps[(int)op];
