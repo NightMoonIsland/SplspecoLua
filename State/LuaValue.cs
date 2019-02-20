@@ -8,27 +8,27 @@ namespace State
 {
     public class LuaValue
     {
-        public static LuaValueTypeEnum TypeOf(Object val)
+        public static LuaValueEnum TypeOf(Object val)
         {
             if(val == null)
             {
-                return LuaValueTypeEnum.LUA_TNIL;
+                return LuaValueEnum.LUA_TNIL;
             }
             else if(val.GetType() == typeof(bool))
             {
-                return LuaValueTypeEnum.LUA_TBOOLEAN;
+                return LuaValueEnum.LUA_TBOOLEAN;
             }
             else if(val.GetType() == typeof(long) || val.GetType() == typeof(double))
             {
-                return LuaValueTypeEnum.LUA_TNUMBER;
+                return LuaValueEnum.LUA_TNUMBER;
             }
             else if(val.GetType() == typeof(string))
             {
-                return LuaValueTypeEnum.LUA_TSTRING;
+                return LuaValueEnum.LUA_TSTRING;
             }
             else
             {
-                return LuaValueTypeEnum.LUA_TNIL;
+                return LuaValueEnum.LUA_TNIL;
             }
         }
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Api
 {
-    public enum LuaValueTypeEnum
+    public enum LuaValueEnum
     {
         LUA_TNIL,
         LUA_TBOOLEAN,
