@@ -73,16 +73,20 @@ namespace Vm
             }
         }
 
-        public OpCodeEnum type;
-        public byte testFlag;
-        public byte setAFlag;
-        public OpArgMaskEnum argBMode;
-        public OpArgMaskEnum argCMode;
-        public OpModeEnum opMode;
-        public OPAction action;
-        public string name;
+        public OpCodeEnum type { get; private set; }
+        public byte testFlag { get; private set; }
+        public byte setAFlag { get; private set; }
+        public OpArgMaskEnum argBMode { get; private set; }
+        public OpArgMaskEnum argCMode { get; private set; }
+        public OpModeEnum opMode { get; private set; }
+        public OPAction action { get; private set; }
+        public string name { get; private set; }
 
-        public OpCode(
+        protected OpCode()
+        {
+
+        }
+        protected OpCode(
             OpCodeEnum type,
             byte testFlag,
             byte setAFlag,
