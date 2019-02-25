@@ -18,7 +18,7 @@ namespace Chunk
         int lastLineDefined;
         byte numParams;
         byte isVararg;
-        byte maxStackSize;
+        public byte maxStackSize { get; private set; }
         int[] code;
         Object[] constants;
         Upvalue[] upvalues;

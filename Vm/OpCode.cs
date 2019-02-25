@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Vm
 {
-    public struct OpCode
+    public class OpCode
     {
-        public delegate void Handler(int i, ILuaVM vm);
+        public delegate void OPAction(int i, ILuaVM vm);
 
         public static readonly OpCode[] codes =
         {
@@ -17,13 +17,25 @@ namespace Vm
             new OpCode(0, 1, OpArgMaskEnum.OpArgU, OpArgMaskEnum.OpArgU, OpModeEnum.iABC, InstructionsImplement.Move, "")
         };
 
+        public bool NotEqual(OpCodeEnum op)
+        {
+            int idx = (int)op;
+            if(op < 0 || idx >= codes.Length)
+            {
+                return false;
+            }
+            else
+            {
+                return this == codes[idx];
+            }
+        }
 
         public byte testFlag;
         public byte setAFlag;
         public OpArgMaskEnum argBMode;
         public OpArgMaskEnum argCMode;
         public OpModeEnum opMode;
-        public Handler handler;
+        public OPAction action;
         public string name;
 
         public OpCode(byte testFlag,
@@ -31,16 +43,18 @@ namespace Vm
             OpArgMaskEnum argBMode,
             OpArgMaskEnum argCMode,
             OpModeEnum opMode,
-            Handler handler,
+            OPAction action,
             string name)
         {
             this.testFlag = testFlag;
             this.setAFlag = setAFlag;
             this.argBMode = argBMode;
             this.argCMode = argCMode;
-            this.handler = handler;
+            this.action = action;
             this.opMode = opMode;
             this.name = name;
         }
+
+
     }
 }
