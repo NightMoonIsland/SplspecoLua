@@ -31,6 +31,16 @@ namespace TestStack
                 int pc = vm.GetPC();
                 int i = vm.Fetch();
                 OpCode opCode = Instruction.GetOpCode(i);
+                if(opCode.NotEqual(OpCodeEnum.OP_RETURN))
+                {
+                    opCode.action(i, vm);
+                    System.Console.WriteLine($"Pc {pc + 1} ,OpcodeName {opCode.name}");
+                    printStack(vm);
+                }
+                else
+                {
+
+                }
             }
         }
 

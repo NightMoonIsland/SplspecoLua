@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestStack", "Test\TestStack\TestStack.csproj", "{B4A6D092-F35C-4F58-A416-DA01E70F4AB1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "Test\TestConsole\TestConsole.csproj", "{D6BA9CE3-EFF8-4E04-BB41-856A4D563D33}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -113,6 +115,18 @@ Global
 		{B4A6D092-F35C-4F58-A416-DA01E70F4AB1}.Release|x64.Build.0 = Release|Any CPU
 		{B4A6D092-F35C-4F58-A416-DA01E70F4AB1}.Release|x86.ActiveCfg = Release|Any CPU
 		{B4A6D092-F35C-4F58-A416-DA01E70F4AB1}.Release|x86.Build.0 = Release|Any CPU
+		{D6BA9CE3-EFF8-4E04-BB41-856A4D563D33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6BA9CE3-EFF8-4E04-BB41-856A4D563D33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6BA9CE3-EFF8-4E04-BB41-856A4D563D33}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D6BA9CE3-EFF8-4E04-BB41-856A4D563D33}.Debug|x64.Build.0 = Debug|Any CPU
+		{D6BA9CE3-EFF8-4E04-BB41-856A4D563D33}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D6BA9CE3-EFF8-4E04-BB41-856A4D563D33}.Debug|x86.Build.0 = Debug|Any CPU
+		{D6BA9CE3-EFF8-4E04-BB41-856A4D563D33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6BA9CE3-EFF8-4E04-BB41-856A4D563D33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6BA9CE3-EFF8-4E04-BB41-856A4D563D33}.Release|x64.ActiveCfg = Release|Any CPU
+		{D6BA9CE3-EFF8-4E04-BB41-856A4D563D33}.Release|x64.Build.0 = Release|Any CPU
+		{D6BA9CE3-EFF8-4E04-BB41-856A4D563D33}.Release|x86.ActiveCfg = Release|Any CPU
+		{D6BA9CE3-EFF8-4E04-BB41-856A4D563D33}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -123,5 +137,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{3F764906-2246-4FF1-A796-AAD43BD1E3CC} = {EA6F53C8-BD0B-46A6-921D-EC7701F15CDC}
 		{B4A6D092-F35C-4F58-A416-DA01E70F4AB1} = {EA6F53C8-BD0B-46A6-921D-EC7701F15CDC}
+		{D6BA9CE3-EFF8-4E04-BB41-856A4D563D33} = {EA6F53C8-BD0B-46A6-921D-EC7701F15CDC}
 	EndGlobalSection
 EndGlobal
