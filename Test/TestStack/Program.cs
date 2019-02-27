@@ -25,7 +25,7 @@ namespace TestStack
         private static void luaMain(Prototype proto)
         {
             ILuaVM vm = new LuaStateImplement();
-            vm.SetTop(proto.maxStackSize);
+            vm.SetTop(proto.MaxStackSize);
             for(; ; )
             {
                 int pc = vm.GetPC();
@@ -33,8 +33,8 @@ namespace TestStack
                 OpCode opCode = Instruction.GetOpCode(i);
                 if(opCode.NotEqual(OpCodeEnum.OP_RETURN))
                 {
-                    opCode.action(i, vm);
-                    System.Console.WriteLine($"Pc {pc + 1} ,OpcodeName {opCode.name}");
+                    opCode.Action(i, vm);
+                    System.Console.WriteLine($"Pc {pc + 1} ,OpcodeName {opCode.Name}");
                     printStack(vm);
                 }
                 else

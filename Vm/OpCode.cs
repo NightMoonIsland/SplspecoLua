@@ -60,6 +60,27 @@ namespace Vm
             new OpCode(OpCodeEnum.OP_EXTRAARG, 0, 1, OpArgMaskEnum.OpArgR, OpArgMaskEnum.OpArgK, OpModeEnum.iABC, null, ""),
         };
 
+        public OpCode this[OpCodeEnum codeEnum]
+        {
+            get
+            {
+                int index = (int)codeEnum;
+                if (index < 0 || index >= codes.Length)
+                {
+                    return null;
+                }
+                else
+                {
+                    return codes[index];
+                }
+            }
+        }
+
+        public override string ToString()
+        {
+            return Type.ToString();
+        }
+
         public bool NotEqual(OpCodeEnum op)
         {
             int idx = (int)op;
@@ -73,14 +94,14 @@ namespace Vm
             }
         }
 
-        public OpCodeEnum type { get; private set; }
-        public byte testFlag { get; private set; }
-        public byte setAFlag { get; private set; }
-        public OpArgMaskEnum argBMode { get; private set; }
-        public OpArgMaskEnum argCMode { get; private set; }
-        public OpModeEnum opMode { get; private set; }
-        public OPAction action { get; private set; }
-        public string name { get; private set; }
+        public OpCodeEnum Type { get; private set; }
+        public byte TestFlag { get; private set; }
+        public byte SetAFlag { get; private set; }
+        public OpArgMaskEnum ArgBMode { get; private set; }
+        public OpArgMaskEnum ArgCMode { get; private set; }
+        public OpModeEnum OpMode { get; private set; }
+        public OPAction Action { get; private set; }
+        public string Name { get; private set; }
 
         protected OpCode()
         {
@@ -96,14 +117,14 @@ namespace Vm
             OPAction action,
             string name)
         {
-            this.type = type;
-            this.testFlag = testFlag;
-            this.setAFlag = setAFlag;
-            this.argBMode = argBMode;
-            this.argCMode = argCMode;
-            this.action = action;
-            this.opMode = opMode;
-            this.name = name;
+            this.Type = type;
+            this.TestFlag = testFlag;
+            this.SetAFlag = setAFlag;
+            this.ArgBMode = argBMode;
+            this.ArgCMode = argCMode;
+            this.Action = action;
+            this.OpMode = opMode;
+            this.Name = name;
         }
 
 

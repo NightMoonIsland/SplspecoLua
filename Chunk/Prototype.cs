@@ -13,37 +13,37 @@ namespace Chunk
         public const int TAG_SHORT_STR  =   0x04;
         public const int TAG_LONG_STR   =   0x14;
 
-        string source;
-        int lineDefined;
-        int lastLineDefined;
-        byte numParams;
-        byte isVararg;
-        public byte maxStackSize { get; private set; }
-        int[] code;
-        Object[] constants;
-        Upvalue[] upvalues;
-        Prototype[] protos;
-        int[] lineInfo;
-        LocVar[] locVars;
-        string[] upvalueNames;
+        public string Source { get; private set; }
+        public int LineDefined { get; private set; }
+        public int LastLineDefined { get; private set; }
+        public byte NumParams { get; private set; }
+        public byte IsVararg { get; private set; }
+        public byte MaxStackSize { get; private set; }
+        public int[] Code { get; private set; }
+        public Object[] Constants { get; private set; }
+        public Upvalue[] Upvalues { get; private set; }
+        public Prototype[] Protos { get; private set; }
+        public int[] LineInfo { get; private set; }
+        public LocVar[] LocVars { get; private set; }
+        public string[] UpvalueNames { get; private set; }
 
         public void Read(BuffReader buffReader, string parentSource)
         {
-            source = buffReader.ReadLuaString();
-            if(string.Empty == source)
+            Source = buffReader.ReadLuaString();
+            if(string.Empty == Source)
             {
-                source = parentSource;
+                Source = parentSource;
             }
-            lineDefined = buffReader.ReadInt32();
-            lastLineDefined = buffReader.ReadInt32();
-            numParams = buffReader.ReadByte();
-            isVararg = buffReader.ReadByte();
-            maxStackSize = buffReader.ReadByte();
+            LineDefined = buffReader.ReadInt32();
+            LastLineDefined = buffReader.ReadInt32();
+            NumParams = buffReader.ReadByte();
+            IsVararg = buffReader.ReadByte();
+            MaxStackSize = buffReader.ReadByte();
 
             readCode(buffReader);
             readConstants(buffReader);
             readUpvalues(buffReader);
-            readProtos(buffReader, source);
+            readProtos(buffReader, Source);
             readLineInfo(buffReader);
             readLocVars(buffReader);
             readUpvalueNames(buffReader);
@@ -51,19 +51,19 @@ namespace Chunk
 
         void readCode(BuffReader buf)
         {
-            code = new int[buf.ReadInt32()];
-            for(int i = 0; i < code.Length; i++)
+            Code = new int[buf.ReadInt32()];
+            for(int i = 0; i < Code.Length; i++)
             {
-                code[i] = buf.ReadInt32();
+                Code[i] = buf.ReadInt32();
             }
         }
 
         void readConstants(BuffReader buf)
         {
-            constants = new Object[buf.ReadInt32()];
-            for(int i = 0; i < constants.Length; i++)
+            Constants = new Object[buf.ReadInt32()];
+            for(int i = 0; i < Constants.Length; i++)
             {
-                constants[i] = readConstant(buf);
+                Constants[i] = readConstant(buf);
             }
         }
 
@@ -93,49 +93,49 @@ namespace Chunk
 
         void readUpvalues(BuffReader buf)
         {
-            upvalues = new Upvalue[buf.ReadInt32()];
-            for(int i = 0; i < upvalues.Length; i++)
+            Upvalues = new Upvalue[buf.ReadInt32()];
+            for(int i = 0; i < Upvalues.Length; i++)
             {
-                upvalues[i] = new Upvalue();
-                upvalues[i].Read(buf);
+                Upvalues[i] = new Upvalue();
+                Upvalues[i].Read(buf);
             }
         }
 
         void readProtos(BuffReader buf, string parentSource)
         {
-            protos = new Prototype[buf.ReadInt32()];
-            for(int i = 0; i < protos.Length; i++)
+            Protos = new Prototype[buf.ReadInt32()];
+            for(int i = 0; i < Protos.Length; i++)
             {
-                protos[i] = new Prototype();
-                protos[i].Read(buf, parentSource);
+                Protos[i] = new Prototype();
+                Protos[i].Read(buf, parentSource);
             }
         }
 
         void readLineInfo(BuffReader buf)
         {
-            lineInfo = new int[buf.ReadInt32()];
-            for(int i = 0; i < lineInfo.Length; i++)
+            LineInfo = new int[buf.ReadInt32()];
+            for(int i = 0; i < LineInfo.Length; i++)
             {
-                lineInfo[i] = buf.ReadInt32();
+                LineInfo[i] = buf.ReadInt32();
             }
         }
 
         void readLocVars(BuffReader buf)
         {
-            locVars = new LocVar[buf.ReadInt32()];
-            for(int i = 0; i < locVars.Length; i++)
+            LocVars = new LocVar[buf.ReadInt32()];
+            for(int i = 0; i < LocVars.Length; i++)
             {
-                locVars[i] = new LocVar();
-                locVars[i].Read(buf);
+                LocVars[i] = new LocVar();
+                LocVars[i].Read(buf);
             }
         }
 
         void readUpvalueNames(BuffReader buf)
         {
-            upvalueNames = new string[buf.ReadInt32()];
-            for(int i = 0; i < upvalueNames.Length; i++)
+            UpvalueNames = new string[buf.ReadInt32()];
+            for(int i = 0; i < UpvalueNames.Length; i++)
             {
-                upvalueNames[i] = buf.ReadLuaString();
+                UpvalueNames[i] = buf.ReadLuaString();
             }
         }
     }

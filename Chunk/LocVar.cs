@@ -6,15 +6,15 @@ namespace Chunk
 {
     public class LocVar
     {
-        string varName;
-        int startPc;
-        int endPc;
+        public string VarName { get; private set; }
+        public int StartPc { get; private set; }
+        public int EndPc { get; private set; }
 
         public void Read(BuffReader buf)
         {
-            varName = buf.ReadLuaString();
-            startPc = buf.ReadInt32();
-            endPc = buf.ReadInt32();
+            VarName = buf.ReadLuaString();
+            StartPc = buf.ReadInt32();
+            EndPc = buf.ReadInt32();
         }
     }
 }

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TestChunk": {
+      "commandName": "Project",
+      "commandLineArgs": "luac.out"
+    }
+  }
+}
