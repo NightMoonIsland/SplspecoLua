@@ -6,7 +6,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Api\Api.csproj" />
+    <ProjectReference Include="..\Chunk\Chunk.csproj" />
     <ProjectReference Include="..\Number\Number.csproj" />
+    <ProjectReference Include="..\Vm\Vm.csproj" />
   </ItemGroup>
 
 </Project>

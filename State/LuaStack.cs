@@ -9,6 +9,13 @@ namespace State
 
         private List<object> slots = new List<object>();
 
+
+        public Closure Closure { get; set; }
+        public List<Object> Varargs { get; set; }
+        public int PC { get; set; }
+
+        public LuaStack Prev { get; set; }
+
         public int Top()
         {
             return slots.Count;
@@ -23,12 +30,36 @@ namespace State
             slots.Add(val);
         }
 
+        public void PushN(List<Object> vals, int n)
+        {
+            int nVals = vals == null ? 0 : vals.Count;
+            if(n < 0)
+            {
+                n = nVals;
+            }
+            for(int i = 0; i < n; i++)
+            {
+                Push(i < nVals ? vals[i] : null);
+            }
+        }
+
         public Object Pop()
         {
             int _count = slots.Count;
             Object ret = slots[_count - 1];
             slots.RemoveAt(_count - 1);
             return ret;
+        }
+
+        public List<Object> PopN(int n)
+        {
+            List<Object> vals = new List<Object>(n);
+            for(int i = 0; i < n; i++)
+            {
+                vals.Add(Pop());
+            }
+            vals.Reverse();
+            return vals;
         }
 
         public int AbsIndex(int idx)

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using Api;
+using Chunk;
+using Vm;
 
 namespace State
 {
@@ -9,7 +11,13 @@ namespace State
     {
         LuaStack stack = new LuaStack();
 
-        public int PC { get; set; }
+        public int PC
+        {
+            get
+            {
+                return stack.PC;
+            }
+        }
 
         public int AbsIndex(int idx)
         {
@@ -23,7 +31,7 @@ namespace State
 
         public void AddPC(int n)
         {
-            throw new NotImplementedException();
+            stack.PC += n;
         }
 
         public void Arith(ArithOpEnum op)
@@ -53,7 +61,9 @@ namespace State
 
         public int Fetch()
         {
-            throw new NotImplementedException();
+            int i = stack.Closure.Proto.Code[stack.PC];
+            stack.PC++;
+            return i;
         }
 
         public void GetConst(int idx)
@@ -148,27 +158,27 @@ namespace State
 
         public void PushBoolean(bool b)
         {
-            throw new NotImplementedException();
+            stack.Push(b);
         }
 
         public void PushInteger(long n)
         {
-            throw new NotImplementedException();
+            stack.Push(n);
         }
 
         public void PushNil()
         {
-            throw new NotImplementedException();
+            stack.Push(null);
         }
 
         public void PushNumber(double d)
         {
-            throw new NotImplementedException();
+            stack.Push(d);
         }
 
         public void PushString(string s)
         {
-            throw new NotImplementedException();
+            stack.Push(s);
         }
 
         public void PushValue(int idx)
@@ -224,7 +234,7 @@ namespace State
 
         public bool ToBoolean(int idx)
         {
-            throw new NotImplementedException();
+            return LuaValue.ToBoolean(stack.Get(idx));
         }
 
         public long ToInteger(int idx)
@@ -237,19 +247,49 @@ namespace State
             throw new NotImplementedException();
         }
 
-        public double ToNumber(int idx)
+        public double? ToNumber(int idx)
         {
-            throw new NotImplementedException();
+            double? n = ToNumberX(idx);
+            return n == null ? 0 : n;
         }
 
-        public double ToNumberX(int idx)
+        public double? ToNumberX(int idx)
         {
-            throw new NotImplementedException();
+            Object val = stack.Get(idx);
+            if(val.GetType() == typeof(double))
+            {
+                return (double)val;
+            }
+            else if(val.GetType() == typeof(long))
+            {
+                return Convert.ToDouble(((long)val));
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public string ToString(int idx)
         {
-            throw new NotImplementedException();
+            Object val = stack.Get(idx);
+            if(TypeEqual<string>(val))
+            {
+                return (string)val;
+            }
+            else if(TypeEqual<long>(val) || TypeEqual<double>(val))
+            {
+                return val.ToString();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static bool TypeEqual<T>(Object A)
+        {
+            return typeof(T) == A.GetType();
         }
 
         public LuaValueEnum Type(int idx)
@@ -282,5 +322,173 @@ namespace State
                     return "";
             }
         }
+
+        private void pushLuaStack(LuaStack newTop)
+        {
+            newTop.Prev = this.stack;
+            this.stack = newTop;
+        }
+        private void popLuaStack()
+        {
+            LuaStack top = this.stack;
+            this.stack = top.Prev;
+            top.Prev = null;
+        }
+
+        public ThreadStatus Load(byte[] chunk, string chunkName, string mode)
+        {
+            Prototype proto = BinaryChunk.Undump(chunk);
+            stack.Push(new Closure(proto));
+            return ThreadStatus.LUA_OK;
+        }
+
+        public void Call(int nArgs, int nResults)
+        {
+            Object val = stack.Get(-(nArgs + 1));
+            if(val.GetType() == typeof(Closure))
+            {
+                Closure c = (Closure)val;
+                Console.WriteLine("");
+                callLuaClosure(nArgs, nResults, c);
+            }
+            else
+            {
+                throw new Exception("val is not a Closure");
+            }
+        }
+
+        private void callLuaClosure(int nArgs, int nResults, Closure c)
+        {
+            int nRegs = c.Proto.MaxStackSize;
+            int nParams = c.Proto.NumParams;
+            bool isVararg = c.Proto.IsVararg == 1;
+
+            LuaStack newStack = new LuaStack();
+            newStack.Closure = c;
+
+            List<Object> funcAndArgs = stack.PopN(nArgs + 1);
+            newStack.PushN(funcAndArgs.GetRange(1, funcAndArgs.Count - 1), nParams);
+            if(nArgs > nParams && isVararg)
+            {
+                newStack.Varargs = funcAndArgs.GetRange(nParams + 1, funcAndArgs.Count);
+            }
+
+            pushLuaStack(newStack);
+            SetTop(nRegs);
+            runLuaClosure();
+            popLuaStack();
+
+            if(nResults != 0)
+            {
+                List<Object> results = newStack.PopN(stack.Top() - nRegs);
+                stack.PushN(results, nResults);
+            }
+        }
+
+        private void runLuaClosure()
+        {
+            for(; ; )
+            {
+                int i = Fetch();
+                OpCode opCode = Instruction.GetOpCode(i);
+                opCode.Action(i, this);
+                if(opCode.Equals(OpCodeEnum.OP_RETURN))
+                {
+                    break;
+                }
+            }
+        }
+
+        public int RegisterCount()
+        {
+            return stack.Closure.Proto.MaxStackSize;
+        }
+
+        public void LoadVararg(int n)
+        {
+            List<Object> varargs = stack.Varargs != null ? stack.Varargs : new List<object>();
+            if(n < 0)
+            {
+                n = varargs.Count;
+            }
+            stack.PushN(varargs, n);
+        }
+
+        public void LoadProto(int idx)
+        {
+            Prototype proto = stack.Closure.Proto.Protos[idx];
+            stack.Push(new Closure(proto));
+        }
+
+        #region Table
+        public void NewTable()
+        {
+            CreateTable(0, 0);
+        }
+
+        public void CreateTable(int nArr, int nRec)
+        {
+            stack.Push(new LuaTable(nArr, nRec));
+        }
+
+        public LuaValueEnum GetTable(int idx)
+        {
+            Object t = stack.Get(idx);
+            Object k = stack.Pop();
+            return getTable(t, k);
+        }
+
+        LuaValueEnum getTable(Object t, Object k)
+        {
+            if(t.GetType() == typeof(LuaTable))
+            {
+                Object v = ((LuaTable)t).Get(k);
+                stack.Push(v);
+                return LuaValue.TypeOf(v);
+            }
+            throw new Exception("");
+        }
+
+        public LuaValueEnum GetField(int idx, string k)
+        {
+            throw new NotImplementedException();
+        }
+
+        public LuaValueEnum GetI(int idx, long i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetTable(int idx)
+        {
+            Object t = stack.Get(idx);
+            Object k = stack.Pop();
+            Object v = stack.Pop();
+            setTable(t, k, v);
+        }
+
+        public void SetField(int idx, string k)
+        {
+            Object t = stack.Get(idx);
+            Object v = stack.Pop();
+            setTable(t, k, v);
+        }
+
+        public void SetI(int idx, long i)
+        {
+            Object t = stack.Get(idx);
+            Object v = stack.Pop();
+            setTable(t, i, v);
+        }
+
+        void setTable(Object t, Object k, Object v)
+        {
+            if(t.GetType() == typeof(LuaTable))
+            {
+                ((LuaTable)t).Put(k, v);
+                return;
+            }
+        }
+        #endregion
     }
 }

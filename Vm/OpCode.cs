@@ -93,6 +93,11 @@ namespace Vm
                 return this == codes[idx];
             }
         }
+        public bool Equals(OpCodeEnum op)
+        {
+            return !NotEqual(op);
+        }
+
 
         public OpCodeEnum Type { get; private set; }
         public byte TestFlag { get; private set; }

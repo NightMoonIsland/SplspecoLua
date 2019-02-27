@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Api
 {
-    public interface ILuaState
+    public interface ILuaState : ILuaTable
     {
         int GetTop();
         int AbsIndex(int idx);
@@ -33,8 +33,8 @@ namespace Api
         bool ToBoolean(int idx);
         long ToInteger(int idx);
         long ToIntegerX(int idx);
-        double ToNumber(int idx);
-        double ToNumberX(int idx);
+        double? ToNumber(int idx);
+        double? ToNumberX(int idx);
         string ToString(int idx);
 
         void PushNil();
@@ -46,7 +46,12 @@ namespace Api
         void Arith(ArithOpEnum op);
         bool Compare(int idx1, int idx2, CmpOpEnum op);
 
+        //void NewTable();
+
         void Len(int idx);
         void Concat(int n);
+
+        ThreadStatus Load(byte[] chunk, string chunkName, string mode);
+        void Call(int nArgs, int nResults);
     }
 }

@@ -11,6 +11,14 @@ namespace Vm
             return OpCode.codes[i & 0x3F];
         }
 
+        public static void GetABC
+            (int i, out int a, out int b, out int c)
+        {
+            a = GetA(i);
+            b = GetB(i);
+            c = GetC(i);
+        }
+
         public static int GetA(int i)
         {
             return (i >> 6) & 0xFF;
