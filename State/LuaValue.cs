@@ -1,4 +1,5 @@
 ﻿using Api;
+using Base;
 using Number;
 using System;
 using System.Collections.Generic;
@@ -14,15 +15,16 @@ namespace State
             {
                 return LuaValueEnum.LUA_TNIL;
             }
-            else if(val.GetType() == typeof(bool))
+            else if(TypeExtension.TypeEqual<bool>(val))
             {
                 return LuaValueEnum.LUA_TBOOLEAN;
             }
-            else if(val.GetType() == typeof(long) || val.GetType() == typeof(double))
+            else if(TypeExtension.TypeEqual<long>(val) 
+                || TypeExtension.TypeEqual<double>(val))
             {
                 return LuaValueEnum.LUA_TNUMBER;
             }
-            else if(val.GetType() == typeof(string))
+            else if(TypeExtension.TypeEqual<string>(val))
             {
                 return LuaValueEnum.LUA_TSTRING;
             }
@@ -38,7 +40,7 @@ namespace State
             {
                 return false;
             }
-            else if(val.GetType() == typeof(bool))
+            else if(TypeExtension.TypeEqual<bool>(val))
             {
                 return (bool)val;
             }
@@ -50,15 +52,15 @@ namespace State
 
         public static double? ToFloat(Object val)
         {
-            if(val.GetType() == typeof(double))
+            if(TypeExtension.TypeEqual<double>(val))
             {
                 return (double)val;
             }
-            else if(val.GetType() == typeof(long))
+            else if(TypeExtension.TypeEqual<long>(val))
             {
                 return Convert.ToDouble(((long)val));
             }
-            else if(val.GetType() == typeof(string))
+            else if(TypeExtension.TypeEqual<string>(val))
             {
                 return LuaNumber.ParseDouble((string)val);
             }
@@ -70,16 +72,16 @@ namespace State
 
         public static long? ToInteger(Object val)
         {
-            if(val.GetType() == typeof(long))
+            if(TypeExtension.TypeEqual<long>(val))
             {
                 return (long)val;
             }
-            else if(val.GetType() == typeof(double))
+            else if(TypeExtension.TypeEqual<double>(val))
             {
                 double n = (double)val;
                 return LuaNumber.IsInteger(n) ? (long?)n : null; 
             }
-            else if(val.GetType() == typeof(string))
+            else if(TypeExtension.TypeEqual<string>(val))
             {
                 return ToInteger((string)val);
             }

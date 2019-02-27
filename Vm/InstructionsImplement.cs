@@ -115,8 +115,10 @@ namespace Vm
         private static void binaryArith(int i, ILuaVM vm, ArithOpEnum op)
         {
             int a = Instruction.GetA(i) + 1;
-            int b = Instruction.GetB(i) + 1;
-            vm.PushValue(b);
+            int b = Instruction.GetB(i);
+            int c = Instruction.GetC(i);
+            vm.GetRK(b);
+            vm.GetRK(c);
             vm.Arith(op);
             vm.Replace(a);
         }

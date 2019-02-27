@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Base;
 using Number;
 
 namespace State
@@ -30,7 +31,7 @@ namespace State
         public Object Get(Object key)
         {
             key = floatToInt(key);
-            if(arr != null && key.GetType() == typeof(long))
+            if(arr != null && TypeExtension.TypeEqual<long>(key))
             {
                 int idx = Convert.ToInt32((long)key);
                 if(idx >= 1 && idx <= arr.Count)
@@ -47,7 +48,7 @@ namespace State
 
         private Object floatToInt(Object key)
         {
-            if(key.GetType() == typeof(double))
+            if(TypeExtension.TypeEqual<double>(key))
             {
                 double f = (double)key;
                 if(LuaNumber.IsInteger(f))

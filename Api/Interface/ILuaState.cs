@@ -46,12 +46,10 @@ namespace Api
         void Arith(ArithOpEnum op);
         bool Compare(int idx1, int idx2, CmpOpEnum op);
 
-        //void NewTable();
-
         void Len(int idx);
         void Concat(int n);
 
-        ThreadStatus Load(byte[] chunk, string chunkName, string mode);
+        ThreadStatusEnum Load(byte[] chunk, string chunkName, string mode);
         void Call(int nArgs, int nResults);
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Api;
+using Base;
 using Chunk;
 using Vm;
 
@@ -10,13 +11,16 @@ namespace State
     public class LuaStateImplement : ILuaVM
     {
         LuaStack stack = new LuaStack();
+        Prototype proto;
+        int pc;
 
-        public int PC
+        public LuaStateImplement()
         {
-            get
-            {
-                return stack.PC;
-            }
+            proto = null;
+        }
+        public LuaStateImplement(Prototype proto)
+        {
+            this.proto = proto;
         }
 
         public int AbsIndex(int idx)
@@ -31,12 +35,25 @@ namespace State
 
         public void AddPC(int n)
         {
-            stack.PC += n;
+            pc += n;
+        }
+
+        public int PC()
+        {
+            return stack.PC;
         }
 
         public void Arith(ArithOpEnum op)
         {
-            throw new NotImplementedException();
+            Object b = stack.Pop();
+            Object a = 
+                op != ArithOpEnum.LUA_OPUNM && 
+                op != ArithOpEnum.LUA_OPBNOT ? stack.Pop() : b;
+            Object result = Arithmetic.Arith(a, b, op);
+            if(result != null)
+            {
+                stack.Push(result);
+            }
         }
 
         public bool CheckStack(int n)
@@ -59,26 +76,31 @@ namespace State
             stack.Set(toIdx, stack.Get(fromIdx));
         }
 
+        public int GetPC()
+        {
+            return pc;
+        }
+
         public int Fetch()
         {
-            int i = stack.Closure.Proto.Code[stack.PC];
-            stack.PC++;
-            return i;
+            return proto.Code[pc++];
         }
 
         public void GetConst(int idx)
         {
-            throw new NotImplementedException();
-        }
-
-        public int GetPC()
-        {
-            throw new NotImplementedException();
+            stack.Push(proto.Constants[idx]);
         }
 
         public void GetRK(int rk)
         {
-            throw new NotImplementedException();
+            if(rk > 0xFF)
+            {
+                GetConst(rk & 0xFF);
+            }
+            else
+            {
+                PushValue(rk + 1);
+            }
         }
 
         public int GetTop()
@@ -103,8 +125,7 @@ namespace State
 
         public bool IsInteger(int idx)
         {
-            //return typeof(stack.Get(idx)) == typeof(int);
-            return false;
+            return TypeExtension.TypeEqual<int>(stack.Get(idx));
         }
 
         public bool IsNil(int idx)
@@ -256,11 +277,11 @@ namespace State
         public double? ToNumberX(int idx)
         {
             Object val = stack.Get(idx);
-            if(val.GetType() == typeof(double))
+            if(TypeExtension.TypeEqual<double>(val))
             {
                 return (double)val;
             }
-            else if(val.GetType() == typeof(long))
+            else if(TypeExtension.TypeEqual<long>(val))
             {
                 return Convert.ToDouble(((long)val));
             }
@@ -273,11 +294,12 @@ namespace State
         public string ToString(int idx)
         {
             Object val = stack.Get(idx);
-            if(TypeEqual<string>(val))
+            if(TypeExtension.TypeEqual<string>(val))
             {
                 return (string)val;
             }
-            else if(TypeEqual<long>(val) || TypeEqual<double>(val))
+            else if(TypeExtension.TypeEqual<long>(val) 
+                    || TypeExtension.TypeEqual<double>(val))
             {
                 return val.ToString();
             }
@@ -285,11 +307,6 @@ namespace State
             {
                 return null;
             }
-        }
-
-        public static bool TypeEqual<T>(Object A)
-        {
-            return typeof(T) == A.GetType();
         }
 
         public LuaValueEnum Type(int idx)
@@ -335,17 +352,17 @@ namespace State
             top.Prev = null;
         }
 
-        public ThreadStatus Load(byte[] chunk, string chunkName, string mode)
+        public ThreadStatusEnum Load(byte[] chunk, string chunkName, string mode)
         {
             Prototype proto = BinaryChunk.Undump(chunk);
             stack.Push(new Closure(proto));
-            return ThreadStatus.LUA_OK;
+            return ThreadStatusEnum.LUA_OK;
         }
 
         public void Call(int nArgs, int nResults)
         {
             Object val = stack.Get(-(nArgs + 1));
-            if(val.GetType() == typeof(Closure))
+            if(TypeExtension.TypeEqual<Closure>(val))
             {
                 Closure c = (Closure)val;
                 Console.WriteLine("");
@@ -440,7 +457,7 @@ namespace State
 
         LuaValueEnum getTable(Object t, Object k)
         {
-            if(t.GetType() == typeof(LuaTable))
+            if(TypeExtension.TypeEqual<LuaTable>(t))
             {
                 Object v = ((LuaTable)t).Get(k);
                 stack.Push(v);
@@ -483,7 +500,7 @@ namespace State
 
         void setTable(Object t, Object k, Object v)
         {
-            if(t.GetType() == typeof(LuaTable))
+            if(TypeExtension.TypeEqual<LuaTable>(t))
             {
                 ((LuaTable)t).Put(k, v);
                 return;

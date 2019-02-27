@@ -3,6 +3,7 @@ using Number;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Base;
 
 
 namespace State
@@ -66,7 +67,23 @@ namespace State
             }
             else
             {
-
+                if(integerFunc != null)
+                {
+                    if(TypeExtension.TypeEqual<long>(a) && 
+                        TypeExtension.TypeEqual<long>(b))
+                    {
+                        return integerFunc((long)a, (long)b);
+                    }
+                }
+                double? x = LuaValue.ToFloat(a);
+                if(x != null)
+                {
+                    double? y = LuaValue.ToFloat(b);
+                    if(y != null)
+                    {
+                        return floatFunc((double)x, (double)y);
+                    }
+                }
             }
             return null;
         }

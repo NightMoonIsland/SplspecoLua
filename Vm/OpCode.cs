@@ -90,7 +90,7 @@ namespace Vm
             }
             else
             {
-                return this == codes[idx];
+                return this != codes[idx];
             }
         }
         public bool Equals(OpCodeEnum op)
@@ -108,10 +108,6 @@ namespace Vm
         public OPAction Action { get; private set; }
         public string Name { get; private set; }
 
-        protected OpCode()
-        {
-
-        }
         protected OpCode(
             OpCodeEnum type,
             byte testFlag,

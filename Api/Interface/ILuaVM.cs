@@ -6,7 +6,7 @@ namespace Api
 {
     public interface ILuaVM : ILuaState
     {
-        int PC { get; }
+        int PC();
         int GetPC();
         void AddPC(int n);
         int Fetch();

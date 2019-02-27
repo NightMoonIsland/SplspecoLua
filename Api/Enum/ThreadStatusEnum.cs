@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Api
 {
-    public enum ThreadStatus
+    public enum ThreadStatusEnum
     {
         LUA_OK,
         LUA_YIELD,

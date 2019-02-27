@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TestVM1": {
+      "commandName": "Project",
+      "commandLineArgs": "luac.out"
+    }
+  }
+}
