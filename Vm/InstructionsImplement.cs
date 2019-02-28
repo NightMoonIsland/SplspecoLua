@@ -7,6 +7,8 @@ namespace Vm
 {
     public class InstructionsImplement
     {
+        public const int LFIELDS_PER_FLUSH = 50;
+
         public static void Move(int i, ILuaVM vm)
         {
             int a = Instruction.GetA(i) + 1;
@@ -43,7 +45,14 @@ namespace Vm
 
         public static void LoadNil(int i, ILuaVM vm)
         {
-
+            int a = Instruction.GetA(i) + 1;
+            int b = Instruction.GetB(i);
+            vm.PushNil();
+            for(int j = a; j <= a + b; j++)
+            {
+                vm.Copy(-1, j);
+            }
+            vm.Pop(1);
         }
 
         public static void NewTable(int i, ILuaVM vm)
@@ -52,6 +61,43 @@ namespace Vm
             int b = Instruction.GetB(i) + 1;
             int c = Instruction.GetC(i);
             vm.GetRK(c);
+        }
+
+        public static void GetTable(int i, ILuaVM vm)
+        {
+            int a = Instruction.GetA(i) + 1;
+            int b = Instruction.GetB(i) + 1;
+            int c = Instruction.GetC(i);
+            vm.GetRK(c);
+            vm.GetTable(b);
+            vm.Replace(a);
+        }
+
+        public static void SetTable(int i, ILuaVM vm)
+        {
+            int a = Instruction.GetA(i) + 1;
+            int b = Instruction.GetB(i) + 1;
+            int c = Instruction.GetC(i);
+            vm.GetRK(b);
+            vm.GetRK(c);
+            vm.SetTable(a);
+        }
+
+        public static void SetList(int i, ILuaVM vm)
+        {
+            int a = Instruction.GetA(i) + 1;
+            int b = Instruction.GetB(i);
+            int c = Instruction.GetC(i);
+            c = c > 0 ? c - 1 : Instruction.GetAx(vm.Fetch());
+
+            vm.CheckStack(1);
+            int idx = c * LFIELDS_PER_FLUSH;
+            for(int j = 1; j <= b; j++)
+            {
+                idx++;
+                vm.PushValue(a + j);
+                vm.SetI(a, idx);
+            }
         }
 
         #region Arith

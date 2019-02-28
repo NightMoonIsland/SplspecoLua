@@ -8,6 +8,10 @@ namespace Base
     {
         public static bool TypeEqual<T>(Object current)
         {
+            if(current == null)
+            {
+                return false;
+            }
             return current.GetType() == typeof(T);
         }
     }

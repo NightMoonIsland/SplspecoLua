@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TestTable": {
+      "commandName": "Project",
+      "commandLineArgs": "luac.out"
+    }
+  }
+}

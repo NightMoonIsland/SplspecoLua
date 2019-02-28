@@ -44,6 +44,59 @@ namespace State
 
         public void Put(Object key, Object val)
         {
+
+            key = floatToInt(key);
+            if(TypeExtension.TypeEqual<long>(key))
+            {
+                int idx = Convert.ToInt32((long)key);
+                if(idx >= 1)
+                {
+                    if(arr == null)
+                    {
+                        arr = new List<Object>();
+                    }
+
+                    int arrLen = arr.Count;
+                    if(idx <= arrLen)
+                    {
+                        arr[idx - 1] = val;
+                        if (idx == arrLen && val == null)
+                        {
+                            shrinkArray();
+                        }
+                        return;
+                    }
+                    if(idx == arrLen + 1)
+                    {
+                        if(map != null)
+                        {
+                            map.Remove(key);
+                        }
+                        if(val != null)
+                        {
+                            arr.Add(val);
+                            expandArray();
+                        }
+                        return;
+                    }
+                }
+            }
+
+            if(val != null)
+            {
+                if(map == null)
+                {
+                    map = new Dictionary<object, object>();
+                }
+                map.Add(key, val);
+            }
+            else
+            {
+                if(map != null)
+                {
+                    map.Remove(key);
+                }
+            }
         }
 
         private Object floatToInt(Object key)
@@ -57,6 +110,36 @@ namespace State
                 }
             }
             return key;
+        }
+
+        private void shrinkArray()
+        {
+            for(int i = arr.Count - 1; i >= 0; i--)
+            {
+                if(arr[i] == null)
+                {
+                    arr.RemoveAt(i);
+                }
+            }
+        }
+
+        private void expandArray()
+        {
+            if(map != null)
+            {
+                for(int idx = arr.Count + 1; ; idx++)
+                {
+                    Object val = map.Remove((long)idx);
+                    if(val != null)
+                    {
+                        arr.Add(val);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
         }
     }
 }
