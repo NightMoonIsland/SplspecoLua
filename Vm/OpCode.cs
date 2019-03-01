@@ -86,7 +86,7 @@ namespace Vm
             int idx = (int)op;
             if(op < 0 || idx >= codes.Length)
             {
-                return false;
+                throw new Exception("Error: idx illegay");
             }
             else
             {

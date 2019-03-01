@@ -218,6 +218,11 @@ namespace State
             stack.Set(idx, stack.Pop());
         }
 
+        /// <summary>
+        /// 若n>0 idx>0，则交换[idx, t - n] [t - n + 1, top]
+        /// </summary>
+        /// <param name="idx"></param>
+        /// <param name="n"></param>
         public void Rotate(int idx, int n)
         {
             int t = stack.Top() - 1;
