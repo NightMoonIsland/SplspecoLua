@@ -55,6 +55,7 @@ namespace Vm
             vm.Pop(1);
         }
 
+        //R(A) := {} (size = B,C)
         public static void NewTable(int i, ILuaVM vm)
         {
             int a = Instruction.GetA(i) + 1;
@@ -63,6 +64,7 @@ namespace Vm
             vm.GetRK(c);
         }
 
+        //R(A) := R(B)[RK(C)]
         public static void GetTable(int i, ILuaVM vm)
         {
             int a = Instruction.GetA(i) + 1;
@@ -73,6 +75,7 @@ namespace Vm
             vm.Replace(a);
         }
 
+        //R(A)[RK(B)] := RK(C)
         public static void SetTable(int i, ILuaVM vm)
         {
             int a = Instruction.GetA(i) + 1;
@@ -83,6 +86,7 @@ namespace Vm
             vm.SetTable(a);
         }
 
+        //R(A)[(C - 1)*FPF+i] := R(A + i)
         public static void SetList(int i, ILuaVM vm)
         {
             int a = Instruction.GetA(i) + 1;
@@ -99,6 +103,124 @@ namespace Vm
                 vm.SetI(a, idx);
             }
         }
+
+        #region LFunction
+        //(iBx) R(A) := closure(KPROTO[Bx])
+        public static void Closure(int i, ILuaVM vm)
+        {
+            int a = Instruction.GetA(i);
+            int bx = Instruction.GetBx(i);
+            vm.LoadProto(bx);
+            vm.Replace(a);
+        }
+
+        //(iABC) R(A),R(A+1)...,R(A+C-2) := R(A)(R(A+1),R(A+2),....,R(A+B-1))
+        public static void Call(int i, ILuaVM vm)
+        {
+            int a = Instruction.GetA(i) + 1;
+            int b = Instruction.GetB(i);
+            int c = Instruction.GetC(i);
+            int nArgs = pushFuncAndArgs(a, b, vm);
+            vm.Call(nArgs, c - 1);
+            popResult(a, c, vm);
+        }
+
+        //(iABC) return R(A), R(A + 1), ......, + R(A + B - 2)
+        public static void Return(int i, ILuaVM vm)
+        {
+            int a = Instruction.GetA(i) + 1;
+            int b = Instruction.GetB(i);
+            if(b == 1)
+            {
+
+            }
+            else if(b > 1)
+            {
+                vm.CheckStack(b - 1);
+                for(int j = a; j <= a + b - 2; j++)
+                {
+                    vm.PushValue(j);
+                }
+            }
+            else
+            {
+                fixStack(a, vm);
+            }
+        }
+
+        //(iABC) R(A),R(A+1),....R(A+B-2) = vararg
+        public static void Vararg(int i, ILuaVM vm)
+        {
+            int a = Instruction.GetA(i) + 1;
+            int b = Instruction.GetB(i);
+            if(b != 1)
+            {
+                vm.LoadVararg(b - 1);
+                popResult(a, b, vm);
+            }
+        }
+
+        //R(A + 1) ：= R(B); R(A) := R(B)[RK(C)]
+        public static void Self(int i, ILuaVM vm)
+        {
+            int a = Instruction.GetA(i) + 1;
+            int b = Instruction.GetB(i) + 1;
+            int c = Instruction.GetC(i);
+            vm.Copy(b, a + 1);
+            vm.GetRK(c);
+            vm.GetTable(b);
+            vm.Replace(a);
+        }
+
+        static int pushFuncAndArgs(int a, int b, ILuaVM vm)
+        {
+            if (b >= 1)
+            {
+                vm.CheckStack(a);
+                for (int i = a; i <= a + b; i++)
+                {
+                    vm.PushValue(i);
+                }
+                return b - 1;
+            }
+            else
+            {
+                fixStack(a, vm);
+                return vm.GetTop() - vm.RegisterCount() - 1;
+            }
+        }
+        static void fixStack(int a, ILuaVM vm)
+        {
+            int x = (int)vm.ToInteger(-1);
+            vm.Pop(1);
+
+            vm.CheckStack(x - a);
+            for (int i = a; i < x; i++)
+            {
+                vm.PushValue(i);
+            }
+            vm.Rotate(vm.RegisterCount() + 1, x - a);
+        }
+        static void popResult(int a, int c, ILuaVM vm)
+        {
+            if (c == 1)
+            {
+
+            }
+            else if (c > 1)
+            {
+                for (int i = a + c - 2; i >= a; i--)
+                {
+                    vm.Replace(i);
+                }
+            }
+            else
+            {
+                vm.CheckStack(1);
+                vm.PushInteger(a);
+            }
+        }
+        #endregion
 
         #region Arith
         public static void Add(int i, ILuaVM vm)

@@ -8,7 +8,7 @@ namespace Api
     {
         int GetTop();
         int AbsIndex(int idx);
-        bool CheckStack(int n);
+        bool CheckStack(int n); //TODO
         void Pop(int n);
         void Copy(int fromIdx, int toIdx);
         void PushValue(int idx);

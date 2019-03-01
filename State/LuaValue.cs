@@ -28,6 +28,10 @@ namespace State
             {
                 return LuaValueEnum.LUA_TSTRING;
             }
+            else if(TypeExtension.TypeEqual<Closure>(val))
+            {
+                return LuaValueEnum.LUA_TFUNCTION;
+            }
             else
             {
                 return LuaValueEnum.LUA_TNIL;

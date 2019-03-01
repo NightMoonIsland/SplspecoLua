@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Api
 {
-    public interface ILuaVM : ILuaState
+    public interface ILuaVM : ILuaState, ILuaLFunction
     {
         int PC();
         int GetPC();
@@ -12,8 +12,5 @@ namespace Api
         int Fetch();
         void GetConst(int idx);
         void GetRK(int rk);
-        int RegisterCount();
-        void LoadVararg(int n);
-        void LoadProto(int idx);
     }
 }

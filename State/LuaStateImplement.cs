@@ -416,6 +416,7 @@ namespace State
             }
         }
 
+        #region LFunction
         public int RegisterCount()
         {
             return stack.Closure.Proto.MaxStackSize;
@@ -424,7 +425,7 @@ namespace State
         public void LoadVararg(int n)
         {
             List<Object> varargs = stack.Varargs != null ? stack.Varargs : new List<object>();
-            if(n < 0)
+            if (n < 0)
             {
                 n = varargs.Count;
             }
@@ -436,6 +437,7 @@ namespace State
             Prototype proto = stack.Closure.Proto.Protos[idx];
             stack.Push(new Closure(proto));
         }
+        #endregion
 
         #region Table
         public void NewTable()

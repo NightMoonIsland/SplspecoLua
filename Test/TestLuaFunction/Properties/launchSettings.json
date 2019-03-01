@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TestLuaFunction": {
+      "commandName": "Project",
+      "commandLineArgs": "luac.out"
+    }
+  }
+}

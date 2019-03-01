@@ -25,6 +25,7 @@ namespace State
         {
             if(slots.Count > MAX_OBJECT_NUM)
             {
+                Console.WriteLine("stack Error:Reach MAX_OBJECT_NUM");
                 return;
             }
             slots.Add(val);

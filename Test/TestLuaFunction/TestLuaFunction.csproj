@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="luac .\bin\Debug\netcoreapp2.1\test.lua" />
+  </Target>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Api\Api.csproj" />
+    <ProjectReference Include="..\..\Chunk\Chunk.csproj" />
+    <ProjectReference Include="..\..\State\State.csproj" />
+    <ProjectReference Include="..\..\Vm\Vm.csproj" />
+  </ItemGroup>
+
+</Project>
